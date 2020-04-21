@@ -28,11 +28,6 @@ variable "generation" {
   description = "The VPC Generation to target. Valid values are 2 or 1."
 }
 
-variable "resource_group" {
-  default     = "Default"
-  description = "The resource group to use. If unspecified, the account's default resource group is used."
-}
-
 ##############################################################################
 # Provider block - Default using logged user creds
 ##############################################################################
