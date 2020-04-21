@@ -35,7 +35,6 @@ provider "ibm" {
 #  ibmcloud_api_key      = "${var.ibmcloud_api_key}"
   generation            = "${var.generation}"
   region                = "${var.region}"
-  resource_group        = "${var.resource_group}"
   ibmcloud_timeout      = 300
 }
 
