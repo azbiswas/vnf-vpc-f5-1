@@ -66,3 +66,11 @@ variable "ibmcloud_endpoint" {
   default     = "cloud.ibm.com"
   description = "The IBM Cloud environmental variable 'cloud.ibm.com' or 'test.cloud.ibm.com'"
 }
+
+variable "cos_image_url_region_mapping" {
+  description = "mapping for cross-region replication"
+  default = {
+    "us-south" = "cos://us-south/vnf-f5-bucket/BIGIP-15.0.1-0.0.11.qcow2",
+    "eu-de" = "cos://eu-de/vnf-f5-frankfurt-bucket/BIGIP-15.0.1-0.0.11.qcow2"
+  }
+}

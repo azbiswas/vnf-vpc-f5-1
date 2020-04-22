@@ -63,7 +63,7 @@ resource "random_uuid" "test" { }
 
 resource "ibm_is_image" "f5_custom_image" {
   depends_on       = ["data.external.authorize_policy_for_image", "random_uuid.test"]
-  href             = "${local.image_url}"
+  href             = "${lookup(var.cos_image_url_region_mapping, data.ibm_is_region.region.name)}"
   name             = "${var.vnf_vpc_image_name}-${substr(random_uuid.test.result,0,8)}"
   operating_system = "centos-7-amd64"
   resource_group   = "${data.ibm_resource_group.rg.id}"
