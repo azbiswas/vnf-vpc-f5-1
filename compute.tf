@@ -55,7 +55,7 @@ data "external" "delete_custom_image" {
 
   query = {
     custom_image_id   = "${data.ibm_is_image.f5_custom_image.id}"
-    ibmcloud_endpoint = "${var.ibmcloud_endpoint}"
+    region            = "${var.region}"
   }
 }
 

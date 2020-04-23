@@ -27,24 +27,23 @@ function _log() {
 ####
 function parse_input() {
     _log "## Entering function: ${FUNCNAME[0]}"
-    eval "$(jq -r '@sh "custom_image_id=\(.custom_image_id) ibmcloud_endpoint=\(.ibmcloud_endpoint)"')"
+    eval "$(jq -r '@sh "custom_image_id=\(.custom_image_id) region=\(.region)"')"
     _log "## Exiting function: ${FUNCNAME[0]}"
 }
 
 ####
 ## USAGE: select_riaas_endpoint
-## selecting the riaas endpoint based on the IBM end point and assigning to script variable.
-## 1. ibmcloud_endpoint - IBM Cloud endpoint can be either cloud.ibm.com or test.cloud.ibm.com.
-##                        As of now, there is no implementation to take the riaas end point
-##                        from terraform.  Hence, hot coded it.
-####
+## selecting the riaas endpoint based on the IBM Region and assigning to script variable.
+## 
 function select_riaas_endpoint() {
-    if [ "$ibmcloud_endpoint" == "cloud.ibm.com" ]
-    then
-        rias_endpoint="https://us-south.iaas.cloud.ibm.com"
-    else
-        rias_endpoint="https://us-south-stage01.iaasdev.cloud.ibm.com"
-    fi
+    #if [ "$ibmcloud_endpoint" == "cloud.ibm.com" ]
+    #then
+    #    rias_endpoint="https://us-south.iaas.cloud.ibm.com"
+    #else
+    #    rias_endpoint="https://us-south-stage01.iaasdev.cloud.ibm.com"
+    #fi
+    rias_endpoint="https://$region.iaas.cloud.ibm.com"
+    
 }
 
 ####

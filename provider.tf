@@ -19,8 +19,8 @@ variable "ibmcloud_svc_api_key" {
 }
 
 variable "region" {
-  default     = "us-south"
-  description = "The VPC Region that you want your VPC, networks and the F5 virtual server to be provisioned in. To list available regions, run `ibmcloud is regions`."
+  default=""
+  description = "The Region where F5 virtual server to be provisioned in. To list available regions, run `ibmcloud is regions`."
 }
 
 variable "generation" {
