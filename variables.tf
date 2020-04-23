@@ -14,12 +14,14 @@ variable "vnf_cos_instance_id" {
 }
 
 ##############################################################################
-# vnf_cos_image_url - Vendor provided F5-BIGIP image COS url.
+# vnf_cos_image_url_map - Vendor provided F5-BIGIP image COS url.
 #                             The value for this variable is enter at offering
 #                             onbaording time.This variable is hidden from the user.
+#                         This value is a map, which contains, image URL for different
+#                         regions
 ##############################################################################
 variable "vnf_cos_image_url_map" {
-  default     = ""
+  default     = {}
   description = "The COS image object SQL URL for F5-BIGIP qcow2 image."
 }
 

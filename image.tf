@@ -19,7 +19,6 @@ locals {
   user_acct_id = "${substr(element(split("a/", data.ibm_is_subnet.f5_subnet1.resource_crn), 1), 0, 32)}"
   apikey = "${var.ibmcloud_svc_api_key}"
   instance_id = "${var.vnf_cos_instance_id}"
-  image_url = "${var.vnf_cos_image_url}"
 }
 
 ##############################################################################
