@@ -18,7 +18,7 @@ variable "vnf_cos_instance_id" {
 #                             The value for this variable is enter at offering
 #                             onbaording time.This variable is hidden from the user.
 ##############################################################################
-variable "vnf_cos_image_url" {
+variable "vnf_cos_image_url_map" {
   default     = ""
   description = "The COS image object SQL URL for F5-BIGIP qcow2 image."
 }
@@ -65,12 +65,4 @@ variable "vnf_profile" {
 variable "ibmcloud_endpoint" {
   default     = "cloud.ibm.com"
   description = "The IBM Cloud environmental variable 'cloud.ibm.com' or 'test.cloud.ibm.com'"
-}
-
-variable "cos_image_url_region_mapping" {
-  description = "mapping for cross-region replication"
-  default = {
-    "us-south" = "cos://us-south/vnf-f5-bucket/BIGIP-15.0.1-0.0.11.qcow2",
-    "eu-de" = "cos://eu-de/vnf-f5-frankfurt-bucket/BIGIP-15.0.1-0.0.11.qcow2"
-  }
 }
