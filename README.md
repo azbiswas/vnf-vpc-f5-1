@@ -55,13 +55,11 @@ Fill in the following values, based on the steps that you completed before you b
 
 | Key | Definition |
 | --- | ---------- |
-| `zone` | The VPC Zone that you want your VPC virtual servers to be provisioned. To list available zones, run `ibmcloud is zones` |
+| `region` | The VPC Zone that you want your VPC virtual servers to be provisioned. To list available zones, run `ibmcloud is regions` |
 | `ssh_key_name` | The name of your public SSH key to be used for F5-BIGIP VSI. Follow [Public SSH Key Doc](https://cloud.ibm.com/docs/vpc-on-classic-vsi?topic=vpc-on-classic-vsi-ssh-keys) for creating and managing ssh key. |
-| `vnf_vpc_image_name` | The name of the F5 Custom Image to be provisioned in your IBM Cloud account and (if already available) to be used to create the F5-BIGIP virtual server instance. |
 | `vnf_profile` | The profile of compute CPU and memory resources to be used when provisioning the vnf instance. To list available profiles, run `ibmcloud is instance-profiles`. |
 | `vnf_instance_name` | The name of the VNF instance to be provisioned. |
 | `subnet_id` | The ID of the subnet where the VNF instance will be deployed. Click on the subnet details in the VPC Subnet Listing to determine this value | 
-| `ibmcloud_endpoint` | The IBM Cloud environment `cloud.ibm.com` or `test.cloud.ibm.com` |
 
 ### Outputs
 After you apply the template your VPC resources are successfully provisioned in IBM Cloud, you can review information such as the virtual server IP addresses and VPC identifiers in the Schematics log files, in the `Terraform SHOW and APPLY` section.
