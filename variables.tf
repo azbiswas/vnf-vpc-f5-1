@@ -14,16 +14,6 @@ variable "vnf_cos_instance_id" {
 }
 
 ##############################################################################
-# vnf_cos_image_name - Vendor provided F5-BIGIP image name as stored in COS.
-#                             The value for this variable is enter at offering
-#                             onbaording time.This variable is hidden from the user.
-##############################################################################
-variable "vnf_cos_image_name" {
-  default     = "BIGIP-15.0.1-0.0.11.qcow2"
-  description = "The F5-BIGIP qcow2 image name."
-}
-
-##############################################################################
 # subnet_name - Subnet where resources are to be provisioned.
 ##############################################################################
 variable "subnet_id"{
