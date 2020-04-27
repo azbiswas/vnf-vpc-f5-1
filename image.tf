@@ -19,6 +19,7 @@ locals {
   user_acct_id = "${substr(element(split("a/", data.ibm_is_subnet.f5_subnet1.resource_crn), 1), 0, 32)}"
   apikey = "${var.ibmcloud_svc_api_key}"
   instance_id = "${var.vnf_cos_instance_id}"
+  image_url="${var.region == "us-south" ? var.vnf_cos_image_url_us_south : var.region == "eu-de" ? var.vnf_cos_image_url_eu_de : var.region == "eu-gb" ? var.vnf_cos_image_url_eu_gb : var.vnf_cos_image_url_us_east }"
 }
 
 ##############################################################################
@@ -43,7 +44,6 @@ data "external" "authorize_policy_for_image" {
   program    = ["bash", "${path.module}/scripts/create_auth.sh"]
 
   query = {
-    ibmcloud_endpoint           = "${var.ibmcloud_endpoint}"
     ibmcloud_svc_api_key    = "${local.apikey}"
     source_service_account      = "${local.user_acct_id}"
     source_service_name         = "is"
@@ -62,7 +62,7 @@ resource "random_uuid" "test" { }
 
 resource "ibm_is_image" "f5_custom_image" {
   depends_on       = ["data.external.authorize_policy_for_image", "random_uuid.test"]
-  href             = "cos://${var.region}/vnf-f5-${var.region}/${var.vnf_cos_image_name}"
+  href             = "${local.image_url}"
   name             = "${var.vnf_vpc_image_name}-${substr(random_uuid.test.result,0,8)}"
   operating_system = "centos-7-amd64"
   resource_group   = "${data.ibm_resource_group.rg.id}"
@@ -79,7 +79,6 @@ data "external" "delete_auth_policy_for_image" {
 
   query = {
     id                       = "${lookup(data.external.authorize_policy_for_image.result, "id")}"
-    ibmcloud_endpoint        = "${var.ibmcloud_endpoint}"
     ibmcloud_svc_api_key = "${local.apikey}"
     region                   = "${data.ibm_is_region.region.name}"
   }

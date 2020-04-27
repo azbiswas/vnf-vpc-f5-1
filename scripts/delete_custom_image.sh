@@ -36,14 +36,7 @@ function parse_input() {
 ## selecting the riaas endpoint based on the IBM Region and assigning to script variable.
 ## 
 function select_riaas_endpoint() {
-    #if [ "$ibmcloud_endpoint" == "cloud.ibm.com" ]
-    #then
-    #    rias_endpoint="https://us-south.iaas.cloud.ibm.com"
-    #else
-    #    rias_endpoint="https://us-south-stage01.iaasdev.cloud.ibm.com"
-    #fi
     rias_endpoint="https://$region.iaas.cloud.ibm.com"
-    
 }
 
 ####

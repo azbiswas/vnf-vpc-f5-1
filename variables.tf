@@ -62,7 +62,22 @@ variable "vnf_profile" {
   description = "The profile of compute CPU and memory resources to be used when provisioning F5-BIGIP VSI. To list available profiles, run `ibmcloud is instance-profiles`."
 }
 
-variable "ibmcloud_endpoint" {
-  default     = "cloud.ibm.com"
-  description = "The IBM Cloud environmental variable 'cloud.ibm.com' or 'test.cloud.ibm.com'"
+variable "vnf_cos_image_url_eu_de" {
+  default=""
+  description = "The COS image object SQL URL for F5-BIGIP qcow2 image in Frankfurt(eu-de) region"
+}
+
+variable "vnf_cos_image_url_us_south" {
+  default = ""
+  description = "The COS image object SQL URL for F5-BIGIP qcow2 image in Dallas(us-south) region"
+}
+
+variable "vnf_cos_image_url_us_east" {
+  default = ""
+  description="The COS image object SQL URL for F5-BIGIP qcow2 image in Washington DC(us-east) region "
+}
+
+variable "vnf_cos_image_url_eu_gb" {
+  default = ""
+  description="The COS image object SQL URL for F5-BIGIP qcow2 image in London (eu-gb) region "
 }

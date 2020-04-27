@@ -20,7 +20,7 @@ variable "ibmcloud_svc_api_key" {
 
 variable "region" {
   default=""
-  description = "The Region where F5 virtual server to be provisioned in. To list available regions, run `ibmcloud is regions`."
+  description = "The Region where F5 virtual server to be provisioned in. To list available regions, run `ibmcloud is regions`. Supported regions are eu-de, eu-gb, us-south, us-east "
 }
 
 variable "generation" {

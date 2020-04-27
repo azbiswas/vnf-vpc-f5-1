@@ -32,13 +32,12 @@ source_service_name=""
 source_service_account=""
 source_resource_type=""
 roles=""
-ibmcloud_endpoint=""
 ibmcloud_svc_api_key=""
 region=""
 
 function parse_input() {
     _log "## Entering function: ${FUNCNAME[0]}"
-    eval "$(jq -r '@sh "ibmcloud_endpoint=\(.ibmcloud_endpoint) ibmcloud_svc_api_key=\(.ibmcloud_svc_api_key) region=\(.region) source_service_name=\(.source_service_name) target_service_name=\(.target_service_name) roles=\(.roles) source_service_account=\(.source_service_account) source_resource_type=\(.source_resource_type) target_resource_instance_id=\(.target_resource_instance_id)"')"
+    eval "$(jq -r '@sh "ibmcloud_svc_api_key=\(.ibmcloud_svc_api_key) region=\(.region) source_service_name=\(.source_service_name) target_service_name=\(.target_service_name) roles=\(.roles) source_service_account=\(.source_service_account) source_resource_type=\(.source_resource_type) target_resource_instance_id=\(.target_resource_instance_id)"')"
     _log "## Exiting function: ${FUNCNAME[0]}"
 }
 
@@ -58,7 +57,7 @@ function is_policy_exist() {
 function login() {
     _log "## Entering function: ${FUNCNAME[0]}"
     # Login to IBMCloud for given region and resource-group
-    ibmcloud login -a "$ibmcloud_endpoint" --apikey "$ibmcloud_svc_api_key" -r "$region" &> "$MSG_FILE"
+    ibmcloud login -a "cloud.ibm.com" --apikey "$ibmcloud_svc_api_key" -r "$region" &> "$MSG_FILE"
     _log "## Exiting function: ${FUNCNAME[0]}"
 }
 
