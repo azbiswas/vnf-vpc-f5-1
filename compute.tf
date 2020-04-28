@@ -47,18 +47,3 @@ resource "ibm_is_instance" "f5_vsi" {
     command = "sleep 30"
   }
 }
-
-# Delete custom image from the local user after VSI creation.
-data "external" "delete_custom_image" {
-  depends_on = ["ibm_is_instance.f5_vsi"]
-  program    = ["bash", "${path.module}/scripts/delete_custom_image.sh"]
-
-  query = {
-    custom_image_id   = "${data.ibm_is_image.f5_custom_image.id}"
-    region            = "${var.region}"
-  }
-}
-
-output "delete_custom_image" {
-  value = "${lookup(data.external.delete_custom_image.result, "custom_image_id")}"
-}

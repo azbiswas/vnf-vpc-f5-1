@@ -1,67 +1,13 @@
-##############################################################################
-# This file creates custom image using F5-BIGIP qcow2 image hosted in vnfsvc COS
-#  - Creates IAM Authorization Policy in vnfsvc account
-#  - Creates Custom Image in User account
-#
-# Note: There are following gaps in ibm is provider and thus using Terraform tricks
-# to overcome the gaps for the PoC sake.
-# Gap1: IBM IS Provider missing resource implementation for is_image (Create, update, delete)
-# Gap2: IBM IS provider missing data source to read logged user provider session info
-# example: account-id
-##############################################################################
 
-# =============================================================================
-# Hack: parse out the user account from the vpc resource crn
-# Fix: Get data_source_ibm_iam_target added that would provide information
-# about user from provider session
-# =============================================================================
 locals {
-  user_acct_id = "${substr(element(split("a/", data.ibm_is_subnet.f5_subnet1.resource_crn), 1), 0, 32)}"
-  apikey = "${var.ibmcloud_svc_api_key}"
-  instance_id = "${var.vnf_cos_instance_id}"
-  image_url="${var.region == "us-south" ? var.vnf_cos_image_url_us_south : var.region == "eu-de" ? var.vnf_cos_image_url_eu_de : var.region == "eu-gb" ? var.vnf_cos_image_url_eu_gb : var.vnf_cos_image_url_us_east }"
-}
-
-##############################################################################
-# Create IAM Authorization Policy for user to able to create custom image
-# pointing to COS object url hosted in vnfsvc account.
-##############################################################################
-#resource "ibm_iam_authorization_policy" "authorize_image" {
-#  depends_on                  = ["data.ibm_is_vpc.f5_vpc"]
-#  provider                    = "ibm.vfnsvc"
-#  source_service_account      = "${local.user_acct_id}"
-#  source_service_name         = "is"
-#  source_resource_type        = "image"
-#  target_service_name         = "cloud-object-storage"
-#  target_resource_type        = "bucket"
-#  roles                       = ["Reader"]
-#  target_resource_instance_id = "${var.vnf_cos_instance_id}"
-#}
-
-# IAM Authorization to create custom images
-data "external" "authorize_policy_for_image" {
-  depends_on = ["data.ibm_is_subnet.f5_subnet1"]
-  program    = ["bash", "${path.module}/scripts/create_auth.sh"]
-
-  query = {
-    ibmcloud_svc_api_key    = "${local.apikey}"
-    source_service_account      = "${local.user_acct_id}"
-    source_service_name         = "is"
-    source_resource_type        = "image"
-    target_service_name         = "cloud-object-storage"
-    target_resource_type        = "bucket"
-    roles                       = "Reader"
-    target_resource_instance_id = "${local.instance_id}"
-    region                      = "${data.ibm_is_region.region.name}"
-    resource_group_id           = "${data.ibm_resource_group.rg.id}"
-  }
+  image_url = "cos://${var.region}/${var.vnf_bucket_base_name}-${var.region}/${var.vnf_cos_image_name}"
 }
 
 # Generating random ID
 resource "random_uuid" "test" { }
 
 resource "ibm_is_image" "f5_custom_image" {
-  depends_on       = ["data.external.authorize_policy_for_image", "random_uuid.test"]
+  depends_on       = ["random_uuid.test"]
   href             = "${local.image_url}"
   name             = "${var.vnf_vpc_image_name}-${substr(random_uuid.test.result,0,8)}"
   operating_system = "centos-7-amd64"
@@ -73,22 +19,23 @@ resource "ibm_is_image" "f5_custom_image" {
   }
 }
 
-data "external" "delete_auth_policy_for_image" {
-  depends_on = ["ibm_is_image.f5_custom_image"]
-  program    = ["bash", "${path.module}/scripts/delete_auth.sh"]
-
-  query = {
-    id                       = "${lookup(data.external.authorize_policy_for_image.result, "id")}"
-    ibmcloud_svc_api_key = "${local.apikey}"
-    region                   = "${data.ibm_is_region.region.name}"
-  }
-}
-
 data "ibm_is_image" "f5_custom_image" {
   name       = "${var.vnf_vpc_image_name}-${substr(random_uuid.test.result,0,8)}"
   depends_on = ["ibm_is_image.f5_custom_image"]
 }
 
-output "auth_policy_id" {
-  value = "${lookup(data.external.authorize_policy_for_image.result, "id")}"
+# Delete custom image from the local user after VSI creation.
+data "external" "delete_custom_image" {
+  depends_on = ["ibm_is_instance.f5_vsi"]
+  program    = ["bash", "${path.module}/scripts/delete_custom_image.sh"]
+
+  query = {
+    custom_image_id   = "${data.ibm_is_image.f5_custom_image.id}"
+    region            = "${var.region}"
+  }
 }
+
+output "delete_custom_image" {
+  value = "${lookup(data.external.delete_custom_image.result, "custom_image_id")}"
+}
+

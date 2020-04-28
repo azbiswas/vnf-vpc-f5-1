@@ -3,17 +3,6 @@
 ##############################################################################
 
 ##############################################################################
-# vnf_cos_instance_id - Vendor provided COS instance-id hosting
-#                               F5-BIGIP image.
-#                               The value for this variable is enter at offering
-#                               onbaording time. This variable is hidden from the user.
-##############################################################################
-variable "vnf_cos_instance_id" {
-  default     = ""
-  description = "The COS instance-id hosting the F5-BIGIP qcow2 image."
-}
-
-##############################################################################
 # subnet_name - Subnet where resources are to be provisioned.
 ##############################################################################
 variable "subnet_id"{
@@ -52,22 +41,18 @@ variable "vnf_profile" {
   description = "The profile of compute CPU and memory resources to be used when provisioning F5-BIGIP VSI. To list available profiles, run `ibmcloud is instance-profiles`."
 }
 
-variable "vnf_cos_image_url_eu_de" {
+##############################################################################
+# vnf_bucket_base_name - The base name of the bucket which holds the qcow2 Image, For Ex. If bucket name is bigip-13.1.3-0.0.6.all-1slot-eu-de bigip-13.1.3-0.0.6.all-1slot should be the input here, hyphen(-) and region name will be added by the script before copy.
+##############################################################################
+variable "vnf_bucket_base_name" {
+  default = ""
+  description ="The base name of the bucket which holds the qcow2 Image, For Ex. If bucket name is bigip-13.1.3-0.0.6.all-1slot-eu-de bigip-13.1.3-0.0.6.all-1slot should be the input here, hyphen(-) and region name will be added by the script before copy"
+}
+
+##############################################################################
+# vnf_cos_image_name - The name of the qcow2 Image name stored in the COS Bucket.
+##############################################################################
+variable "vnf_cos_image_name" {
   default=""
-  description = "The COS image object SQL URL for F5-BIGIP qcow2 image in Frankfurt(eu-de) region"
-}
-
-variable "vnf_cos_image_url_us_south" {
-  default = ""
-  description = "The COS image object SQL URL for F5-BIGIP qcow2 image in Dallas(us-south) region"
-}
-
-variable "vnf_cos_image_url_us_east" {
-  default = ""
-  description="The COS image object SQL URL for F5-BIGIP qcow2 image in Washington DC(us-east) region "
-}
-
-variable "vnf_cos_image_url_eu_gb" {
-  default = ""
-  description="The COS image object SQL URL for F5-BIGIP qcow2 image in London (eu-gb) region "
+  description = "The name of the qcow2 Image name"
 }
